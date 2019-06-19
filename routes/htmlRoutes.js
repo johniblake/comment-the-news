@@ -12,40 +12,43 @@ var db = require("../models");
 router.get("/", function(req, res) {
   // First, we grab the body of the html with axios
   axios
-    .get("http://www.echojs.com/")
+    .get("http://www.startribune.com/local/")
     .then(function(response) {
       // Then, we load that into cheerio and save it to $ for a shorthand selector
       var $ = cheerio.load(response.data);
 
-      // Now, we grab every h2 within an article tag, and do the following:
-      $("article h2").each(function(i, element) {
+      $(".tease").each(function(i, element) {
         // Save an empty result object
         var result = {};
 
         // Add the text and href of every link, and save them as properties of the result object
         result.title = $(this)
-          .children("a")
-          .text();
+          .find(".tease-headline")
+          .text()
+          .trim();
+
         result.link = $(this)
-          .children("a")
-          .attr("href");
+          .find(".tease-headline")
+          .attr("href")
+          .trim();
+
+        result.summary = $(this)
+          .find(".tease-summary")
+          .text()
+          .trim();
+
+        console.log("RESULT: ");
+        console.log(result);
 
         // Create a new Article using the `result` object built from scraping
-        db.Article.find({ title: result.title })
+        // let article = db.Article.create(result).then();
+        db.Article.updateOne({ title: result.title }, result, {
+          upsert: true,
+          setDefaultsOnInsert: true
+        })
           .then(article => {
+            console.log("Successfully updated/added item to db!");
             console.log(article);
-            //if the scraped article is not in the database, create a new record in the database
-            if (!article) {
-              db.Article.create(result)
-                .then(function(dbArticle) {
-                  // View the added result in the console
-                  console.log(dbArticle);
-                })
-                .catch(err => {
-                  // If an error occurred, log it
-                  console.log(err);
-                });
-            }
           })
           .catch(err => {
             res.json(err);
@@ -55,14 +58,24 @@ router.get("/", function(req, res) {
       return true;
     })
     .then(() => {
-      db.Article.find().then(articles => {
-        console.log("Articles:");
+      db.Article.find({ saved: false }).then(articles => {
+        //console.log("Articles:");
 
-        console.log(articles);
+        //console.log(articles);
 
         res.render("index", { Articles: articles });
       });
     });
+});
+
+router.get("/saved", (req, res) => {
+  db.Article.find({ saved: true }).then(articles => {
+    //console.log("Articles:");
+
+    //console.log(articles);
+
+    res.render("saved", { Articles: articles });
+  });
 });
 
 module.exports = router;

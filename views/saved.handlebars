@@ -1,3 +1,22 @@
-<div>
-    Saved component
+<nav class="nav">
+    <a href="/">Home</a>
+</nav>
+<div class="article-container">
+    {{#if Articles}}
+    {{#each Articles}}
+    {{>article/saved-article-block}}
+    {{/each}}
+    {{/if}}
+    {{#unless Articles}}
+    <div class="no-articles-banner">
+        Uh Oh. Looks like we don't have any saved articles.
+    </div>
+    {{/unless}}
 </div>
+<div class="bootbox-body">
+    <div id="container-fluid text-center">
+        <ul class="list-group notes-container"></ul>
+    </div>
+</div>
+
+<script src="./js/saved.js"></script>

@@ -1,7 +1,14 @@
-<div>
+<nav class="nav">
+    <a href="/">Home</a>
+    <a href="/saved">Saved Articles</a>
+    <button class="clear-button btn btn-danger">Clear Articles</button>
+</nav>
+<div class="article-container">
     {{#if Articles}}
     {{#each Articles}}
     {{>article/article-block}}
     {{/each}}
     {{/if}}
 </div>
+
+<script src="/js/index.js"></script>

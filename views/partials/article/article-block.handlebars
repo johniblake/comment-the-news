@@ -1,4 +1,7 @@
-<div>
-    {{this.title}}
-    {{this.link}}
+<div class="article" id="{{this._id}}">
+    <div class="article-header">
+        <a href=" {{this.link}}" target="_blank">{{this.title}}</a>
+        <button class="save-button btn btn-primary" data-id="{{this._id}}">Save</button>
+    </div>
+    <p>{{this.summary}}</p>
 </div>

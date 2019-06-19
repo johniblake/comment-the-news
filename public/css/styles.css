@@ -1,0 +1,81 @@
+body {
+  background-color: whitesmoke;
+  display: block;
+}
+.nav {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  flex-direction: row;
+  height: 7vh;
+  background-color: dodgerblue;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.nav a {
+  color: white;
+  margin: 20px;
+}
+
+.nav a:hover {
+  color: white;
+}
+
+.article-container {
+  padding-top: 9vh;
+}
+
+.article {
+  padding: 15px;
+  color: black;
+  border-radius: 5px;
+  margin: 10px;
+  border: 1px solid darkgrey;
+}
+
+.article-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.article a {
+  color: black;
+  font-size: 1.5rem;
+}
+
+.article a:hover {
+  color: black;
+  font-weight: 600;
+  font-size: 1.5rem;
+  text-decoration-line: none;
+}
+
+.no-articles-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: blue;
+}
+
+/* Modal Content/Box */
+#notes {
+  flex-direction: column;
+  justify-content: flex-end;
+  background-color: whitesmoke;
+  margin: 25% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  overflow: scroll;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.note {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
