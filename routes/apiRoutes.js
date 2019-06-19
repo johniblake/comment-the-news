@@ -123,4 +123,20 @@ router.delete("/api/articles/", function(req, res) {
     });
 });
 
+router.delete("/api/notes/:articleId/:noteId", function(req, res) {
+  db.Article.update(
+    { _id: req.params.articlId },
+    { $pull: { notes: req.params.nodeId } }
+  )
+    .then(() => {
+      return db.Note.remove({ _id: req.params.noteId });
+    })
+    .then(result => {
+      res.json(result);
+    })
+    .catch(err => {
+      res.json(err);
+    });
+});
+
 module.exports = router;

@@ -1,20 +1,3 @@
-// Grab the articles as a json
-// $.getJSON("/api/saved", function(data) {
-//   // For each one
-//   for (var i = 0; i < data.length; i++) {
-//     // Display the apropos information on the page
-//     $("#articles").append(
-//       "<p data-id='" +
-//         data[i]._id +
-//         "'>" +
-//         data[i].title +
-//         "<br />" +
-//         data[i].link +
-//         "</p>"
-//     );
-//   }
-// });
-
 $(document).on("click", ".unsave-button", function() {
   let id = $(this).attr("data-id");
   $.ajax({
@@ -68,6 +51,10 @@ $(document).on("click", ".notes-button", function() {
         _id: data._id,
         notes: data.notes || []
       };
+      console.log("Note Data:");
+
+      console.log(noteData);
+
       // Adding some information about the article and article notes to the save button for easy access
       // When trying to add a new note
       $(".btn.save-button").data("article", noteData);
@@ -100,8 +87,20 @@ $(document).on("click", ".save-button", function() {
   }
 });
 
-//stolen from example
+$(document).on("click", ".note-delete", function() {
+  let articleId = $(this).data("article-id");
+  let noteId = $(this).data("note-id");
 
+  $.ajax({
+    method: "DELETE",
+    url: "api/notes/" + articleId + "/" + noteId
+  }).then(function() {
+    // When complete, close the modal
+    bootbox.hideAll();
+  });
+});
+
+//stolen from example
 function renderNotesList(data) {
   // This function handles rendering note list items to our notes modal
   // Setting up an array of notes to render after finished
@@ -125,7 +124,8 @@ function renderNotesList(data) {
         $("<button class='btn btn-danger note-delete'>x</button>")
       );
       // Store the note id on the delete button for easy access when trying to delete
-      currentNote.children("button").data("_id", data.notes[i]._id);
+      currentNote.children("button").data("note-id", data.notes[i]._id);
+      currentNote.children("button").data("article-id", data._id);
       // Adding our currentNote to the notesToRender array
       notesToRender.push(currentNote);
     }
